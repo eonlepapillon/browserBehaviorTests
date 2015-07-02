@@ -75,8 +75,10 @@
 
 
         <div class="test-area focus">
-            <input class="focus-test" type="text" name="test" placeholder="focus 1" />
-            <input class="focus-test" type="text" name="test2" placeholder="focus 2 /">
+            <input class="focus-test" type="text" name="text" placeholder="text" />
+            <input class="focus-test" type="number" name="number" placeholder="number" />
+            <input class="focus-test" type="tel" name="tel" placeholder="tel" />
+            <input class="focus-test" type="email" name="email" placeholder="email" />
         </div>
 
         <div class="test-area drag">
@@ -131,7 +133,7 @@
     </section>
 
     <script type="text/javascript">
-        var parent = document.getElementById('list'),
+        var list = document.getElementById('list'),
             eventlist = document.getElementById('eventlist'),
             counter = 0;
 
@@ -139,7 +141,7 @@
             'use strict';
 
             var li = document.createElement('li'),
-                first = parent.firstChild,
+                first = list.firstChild,
                 firstReg, firstCounter, firstType, firstAmount,
                 type = event.type;
 
@@ -159,9 +161,9 @@
                 li.innerHTML = counter + ': ' + type + '/' + 1;
 
                 if (first) {
-                    parent.insertBefore(li, first);
+                    list.insertBefore(li, first);
                 } else {
-                    parent.appendChild(li);
+                    list.appendChild(li);
                 }
             }
 
