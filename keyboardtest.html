@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>keyboard test</title>
+</head>
+
+<body>
+    <section>
+        <h1>input text</h1>
+        <label for="inputtext">text</label>
+        <input class="event" type="text" id="inputtext" />
+        <br />
+        <label for="inputtextpattern">text+pattern [0-9]*</label>
+        <input class="event" type="text" pattern="[0-9]*" id="inputtextpattern" />
+    </section>
+    <section>
+        <h1>input number</h1>
+        <label for="inputnumber">number</label>
+        <input class="event" type="number" id="inputnumber" />
+        <br />
+        <label for="inputnumberpattern">number+pattern [0-9]*</label>
+        <input class="event" type="number" pattern="[0-9]*" id="inputnumberpattern" />
+    </section>
+    <section>
+        <h1>input tel</h1>
+        <label for="inputtel">tel</label>
+        <input class="event" type="tel" id="inputtel" />
+    </section>
+
+    <ul id="eventList"></ul>
+
+    <script>
+    (function() {
+        var list = document.getElementById('eventList'),
+            first,
+            i = 0;
+
+        window.addEventListener('keydown', showEvent);
+        window.addEventListener('keypress', showEvent);
+        window.addEventListener('keyup', showEvent);
+        document.addEventListener('paste', showPastEvent);
+
+        function showEvent(event) {
+            console.debug(event.target.id, event.type, event.target.value, event);
+
+            var li = document.createElement('li'),
+                character = event.keyCode || event.which;
+
+            li.innerHTML = i + ' ' + event.target.id + '-' + event.type + ': ' + character +
+                ' value: ' + event.target.value;
+
+            if (first) {
+                list.insertBefore(li, first);
+
+            } else {
+                list.appendChild(li);
+
+            }
+
+            first = li;
+            i += 1;
+
+        }
+
+        function showPastEvent (event) {
+        	debugger;
+        }
+    })();
+    </script>
+</body>
+
+</html>
