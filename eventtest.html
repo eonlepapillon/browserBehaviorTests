@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, minimal-ui" />
+    <title>Event test</title>
+
+    <style>
+        body {
+            margin-bottom: 500%;
+        }
+        .test,
+        .data {
+            box-sizing: border-box;
+            display: inline-block;
+            width: 45%;
+            vertical-align: top;
+        }
+        #eventlist{
+            margin-bottom: 1em;
+        }
+        @media all and (min-width: 520px){
+            #eventlist{
+                -webkit-columns: 2;
+                -moz-columns: 2;
+                -o-columns: 2;
+                columns: 2;
+            }
+            #eventlist label{
+                display: block;
+                white-space: nowrap;
+            }
+        }
+        #list {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        .test {
+            border: 1px solid #eee;
+        }
+        .test-area {
+            margin-bottom: 1em
+        }
+        .focus-test{
+            max-width: 80%;
+        }
+        .focus-test:focus {
+            background-color: green;
+            color: white;
+        }
+        #draggable {
+            width: 4em;
+            height: 4em;
+            text-align: center;
+            background: white;
+        }
+        .dropzone {
+            width: 5em;
+            height: 5em;
+            background: blueviolet;
+            margin-bottom: 1em;
+            padding: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Event test</h1>
+
+    <section class="test">
+        <h2>Test zone</h2>
+
+
+        <div class="test-area focus">
+            <input class="focus-test" type="text" name="text" placeholder="text" />
+            <input class="focus-test" type="number" name="number" placeholder="number" />
+            <input class="focus-test" type="tel" name="tel" placeholder="tel" />
+            <input class="focus-test" type="email" name="email" placeholder="email" />
+        </div>
+
+        <div class="test-area drag">
+            <div class="dropzone">
+                <div id="draggable" draggable="true" ondragstart="event.dataTransfer.setData('text/plain',null)">
+                    drag me
+                </div>
+            </div>
+
+            <div class="dropzone"></div>
+        </div>
+
+
+    </section>
+
+    <section class="data">
+        <h2>Events</h2>
+        
+        <div id="eventlist">
+            <!-- Add new events to this list -->
+            <label>scroll<input type="checkbox" name="scroll" /></label>
+            <label>wheel<input type="checkbox" name="wheel" /></label>
+            <label>click<input type="checkbox" name="click" /></label>
+            <label>dblclick<input type="checkbox" name="dblclick" /></label>
+            <label>touchstart<input type="checkbox" name="touchstart" /></label>
+            <label>touchmove<input type="checkbox" name="touchmove" /></label>
+            <label>touchend<input type="checkbox" name="touchend" /></label>
+            <label>touchcancel<input type="checkbox" name="touchcancel" /></label>
+            <label>dragstart<input type="checkbox" name="dragstart" /></label>
+            <label>drag<input type="checkbox" name="drag" /></label>
+            <label>dragenter<input type="checkbox" name="dragenter" /></label>
+            <label>dragover<input type="checkbox" name="dragover" /></label>
+            <label>dragleave<input type="checkbox" name="dragleave" /></label>
+            <label>dragend<input type="checkbox" name="dragend" /></label>
+            <label>drop<input type="checkbox" name="drop" /></label>
+            <label>pointerdown<input type="checkbox" name="pointerdown" /></label>
+            <label>pointermove<input type="checkbox" name="pointermove" /></label>
+            <label>pointerup<input type="checkbox" name="pointerup" /></label>
+            <label>keydown<input type="checkbox" name="keydown" /></label>
+            <label>keypress<input type="checkbox" name="keypress" /></label>
+            <label>keyup<input type="checkbox" name="keyup" /></label>
+            <label>mousedown<input type="checkbox" name="mousedown" /></label>
+            <label>mouseup<input type="checkbox" name="mouseup" /></label>
+            <label>focus<input type="checkbox" name="focus" /></label>
+            <label>blur<input type="checkbox" name="blur" /></label>
+            <label>focusin<input type="checkbox" name="focusin" /></label>
+            <label>focusout<input type="checkbox" name="focusout" /></label>
+        </div>
+
+        <h2>Triggered</h2>
+        <ol id="list"></ol>
+    </section>
+
+    <script type="text/javascript">
+        var list = document.getElementById('list'),
+            eventlist = document.getElementById('eventlist'),
+            counter = 0;
+
+        function catcher(event) {
+            'use strict';
+
+            var li = document.createElement('li'),
+                first = list.firstChild,
+                firstReg, firstCounter, firstType, firstAmount,
+                type = event.type;
+
+            counter += 1;
+
+            if (first !== null) {
+                firstReg = /(\d+):\s([\w]+)\/(\d+)/.exec(first.innerText);
+                firstCounter = firstReg[1];
+                firstType = firstReg[2];
+                firstAmount = firstReg[3];
+            }
+
+            if (firstType === type) {
+                first.innerHTML = firstCounter + ': ' + firstType + '/' + (parseInt(firstAmount, 10) + 1);
+
+            } else {
+                li.innerHTML = counter + ': ' + type + '/' + 1;
+
+                if (first) {
+                    list.insertBefore(li, first);
+                } else {
+                    list.appendChild(li);
+                }
+            }
+
+            console.log('event', type, event);
+        }
+
+        function addEvents(eventlist) {
+            'use strict';
+            
+            console.log('add events', eventlist);
+
+            var i = 0,
+                l = eventlist.length,
+                ael = window.addEventListener;
+
+            // add events
+            for (; i < l; i += 1) {
+                ael(eventlist[i], catcher, false);
+            }
+        }
+
+        function removeEvents(eventlist) {
+            'use strict';
+
+            console.log('remove events', eventlist);
+
+            var i = 0,
+                l = eventlist.length,
+                rel = window.removeEventListener;
+
+            // add events
+            for (; i < l; i += 1) {
+                rel(eventlist[i], catcher, false);
+            }
+        }
+
+        function readEventList () {
+            'use strict';
+
+            var inputs = eventlist.getElementsByTagName('input'),
+                input,
+                removeEventList = [],
+                addEventList = [],
+                i = 0,
+                l = inputs.length;
+
+            for(;i < l; i += 1){
+                input = inputs[i];
+                if(input.checked){
+                    addEventList.push(input.name);
+                } else {
+                    removeEventList.push(input.name);
+                }
+            }
+
+            removeEvents(removeEventList);
+            addEvents(addEventList);
+        }
+
+        eventlist.addEventListener('click', readEventList);
+
+    </script>
+
+    <script>
+        var dragged;
+
+        /* events fired on the draggable target */
+        document.addEventListener('dragstart', function(event) {
+            // store a ref. on the dragged elem
+            dragged = event.target;
+            // make it half transparent
+            event.target.style.opacity = 0.5;
+        }, false);
+
+        document.addEventListener('dragend', function(event) {
+            // reset the transparency
+            event.target.style.opacity = '';
+        }, false);
+
+        /* events fired on the drop targets */
+        document.addEventListener('dragover', function(event) {
+            // prevent default to allow drop
+            event.preventDefault();
+        }, false);
+
+        document.addEventListener('dragenter', function(event) {
+            // highlight potential drop target when the draggable element enters it
+            if (event.target.className == 'dropzone') {
+                event.target.style.background = 'purple';
+            }
+
+        }, false);
+
+        document.addEventListener('dragleave', function(event) {
+            // reset background of potential drop target when the draggable element leaves it
+            if (event.target.className == 'dropzone') {
+                event.target.style.background = '';
+            }
+
+        }, false);
+
+        document.addEventListener('drop', function(event) {
+            // prevent default action (open as link for some elements)
+            event.preventDefault();
+            // move dragged elem to the selected drop target
+            if (event.target.className == 'dropzone') {
+                event.target.style.background = '';
+                dragged.parentNode.removeChild(dragged);
+                event.target.appendChild(dragged);
+            }
+
+        }, false);
+    </script>
+</body>
+
+</html>
