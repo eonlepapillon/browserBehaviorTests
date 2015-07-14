@@ -2,10 +2,10 @@
 Small simple tests to test behavior in browsers (mobile)browsers
 
 ## eventtest
-It let's you test different events on browsers
+This testpage let's you test all the different events of the browsers.
 
 ## inputtest
-It let's you test hover, active, focus, etc states on browsers
+This testpage let's you test css default, hover, active and focus states of the browsers.
 
 ## keyboardtest
-It let's you test the keyboard event on browsers
+This testpage let's you test the keyboard event of the browsers.
