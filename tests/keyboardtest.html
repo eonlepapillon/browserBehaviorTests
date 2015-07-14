@@ -8,11 +8,20 @@
 
 	<title>keyboard test</title>
 	<meta name="description" content="This testpage let's you test the keyboard event of the browsers.">
+
+	<style type="text/css">
+		#eventList{
+			list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+	</style>
 </head>
 
 <body>
 	<section>
 		<h1>input text</h1>
+
 		<label for="inputtext">text</label>
 		<input class="event" type="text" id="inputtext" />
 		<br />
@@ -23,6 +32,7 @@
 
 	<section>
 		<h1>input number</h1>
+
 		<label for="inputnumber">number</label>
 		<input class="event" type="number" id="inputnumber" />
 		<br />
@@ -33,15 +43,22 @@
 
 	<section>
 		<h1>input tel</h1>
+
 		<label for="inputtel">tel</label>
 		<input class="event" type="tel" id="inputtel" />
 	</section>
 
 	<section>
 		<h1>input date</h1>
+
 		<label for="inputdate">date</label>
-		<input class="event" type="date" id="inputdate" />
+		<!-- input date needs a min and max attribute, else Andriod becomes slooooow -->
+		<input class="event" type="date" min="1900-01-01" max="2100-12-31" id="inputdate" />
 	</section>
+
+	<p>
+		<strong>&lt;target id&gt;</strong>-<strong>&lt;event type&gt;</strong>(: <strong>&lt;character or key&gt;</strong>) value: <strong>&lt;value&gt;</strong>
+	</p>
 
 	<ol id="eventList"></ol>
 
@@ -50,22 +67,40 @@
 			'use strict';
 
 			var list = document.getElementById('eventList'),
-			first,
-			i = 0;
+				first,
+				i = 0;
 
-			window.addEventListener('keydown', showEvent);
-			window.addEventListener('keypress', showEvent);
-			window.addEventListener('keyup', showEvent);
-			document.addEventListener('paste', showPastEvent);
+			window.addEventListener('keydown', showKeyEvent);
+			window.addEventListener('keypress', showKeyEvent);
+			window.addEventListener('keyup', showKeyEvent);
+			window.addEventListener('change', showChangeEvent);
+			document.addEventListener('paste', showPasteEvent);
 
-			function showEvent(event) {
-				console.debug(event.target.id, event.type, event.target.value, event);
+			function showKeyEvent(event) {
+				console.debug('key', event.target.id, event.type, event.target.value, event);
 
-				var li = document.createElement('li'),
-				character = event.keyCode || event.which;
+				var characterOrKey = event.keyCode || event.which;
 
-				li.innerHTML = i + ' ' + event.target.id + '-' + event.type + ': ' + character +
-				' value: ' + event.target.value;
+				addToList(event.target.id + '-' + event.type + ': ' + characterOrKey + ' value: ' + event.target.value);
+
+			}
+
+			function showPasteEvent(event) {
+				console.debug('paste', event);
+
+				addToList(event.target.id + '-' + event.type + ' value: ' + event.target.value);
+			}
+
+			function showChangeEvent(event) {
+				console.debug('change', event.target.id, event.type, event.target.value, event);
+
+				addToList(event.target.id + '-' + event.type + ' value: ' + event.target.value);
+			}
+
+			function addToList (string) {
+				var li = document.createElement('li');
+
+				li.innerHTML = i + ' ' + string;
 
 				if (first) {
 					list.insertBefore(li, first);
@@ -76,15 +111,10 @@
 				}
 
 				first = li;
-				i += 1;
-
+				i += 1
 			}
-
-			function showPastEvent (event) {
-			   debugger;
-		   }
-	   })();
-   </script>
+		})();
+	</script>
 </body>
 
 </html>
