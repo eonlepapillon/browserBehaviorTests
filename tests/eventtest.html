@@ -81,6 +81,8 @@
 			<input class="focus-test" type="number" name="number" placeholder="number" />
 			<input class="focus-test" type="tel" name="tel" placeholder="tel" />
 			<input class="focus-test" type="email" name="email" placeholder="email" />
+			<!-- input date needs a min and max attribute, else Andriod becomes slooooow -->
+			<input class="focus-test" type="date" name="date" min="1900-01-01" max="2100-12-31" placeholder="date" />
 		</div>
 
 		<div class="test-area drag">
@@ -128,6 +130,7 @@
 			<label>blur<input type="checkbox" name="blur" /></label>
 			<label>focusin<input type="checkbox" name="focusin" /></label>
 			<label>focusout<input type="checkbox" name="focusout" /></label>
+			<label>change<input type="checkbox" name="change" /></label>
 		</div>
 
 		<h2>Triggered</h2>
