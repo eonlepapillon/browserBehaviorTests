@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "quotes": "single"
+  },
+  "globals": {
+    "window": true,
+    "document": true
+  }
+}
